@@ -30,9 +30,10 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import Login from './screens/Login/LoginPage';
+import Login from './screens/Login/LoginAndRegisterScreen';
 import Register from './screens/Register/RegisterPage';
 import CustomButton from './components/CustomButton';
+import LoginAndRegisterScreen from './screens/Login/LoginAndRegisterScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -72,29 +73,8 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.sectionContainer}>
-      {/* <Touchable /> */}
-      {/* <View style={styles.buttonContainer}>
-        <CustomButton
-          name="Login"
-          width={100}
-          onPressFunction={() => setHomePage('login')}
-          backgroundColor="gray"
-          textAlign="center"
-        />
-        <CustomButton
-          name="Register"
-          width={100}
-          onPressFunction={() => setHomePage('register')}
-        />
-      </View> */}
-      {homePage == 'login' ? <Login /> : 'register' ? <Register /> : ''}
+      <LoginAndRegisterScreen homePage={homePage} setHomePage={setHomePage} />
       {loginAndRegisterDecider()}
-      {/* <View>
-        <Text>Don't have an account</Text>
-        <TouchableOpacity onPress={() => setHomePage('register')}>
-          <Text>Register</Text>
-        </TouchableOpacity>
-      </View> */}
     </SafeAreaView>
   );
 }

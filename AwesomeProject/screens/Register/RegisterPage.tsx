@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -11,11 +11,23 @@ import CustomButton from '../../components/CustomButton';
 
 const screenWidth = Dimensions.get('window').width;
 const Register = () => {
+  const [isSecure, setIsSecure] = useState(false);
   return (
     <SafeAreaView style={styles.viewContainer}>
       {/* <Text>Register</Text> */}
-      <TextInput placeholder="Mail" style={styles.textInput} />
-      <TextInput placeholder="Password" style={styles.textInput} />
+      <TextInput
+        // autoCapitalize="none"
+        keyboardType="email-address"
+        placeholder="Mail"
+        style={styles.textInput}
+      />
+      <TextInput
+        autoCapitalize="none"
+        keyboardType="visible-password"
+        placeholder="Password"
+        style={styles.textInput}
+        secureTextEntry={isSecure}
+      />
       <CustomButton
         name="Register"
         border={true}
