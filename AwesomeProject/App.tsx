@@ -4,7 +4,6 @@
  *
  * @format
  */
-
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -34,74 +33,41 @@ import Login from './screens/Login/LoginAndRegisterScreen';
 import Register from './screens/Register/RegisterPage';
 import CustomButton from './components/CustomButton';
 import LoginAndRegisterScreen from './screens/Login/LoginAndRegisterScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MainScreen from './screens/Main/MainScreen';
+// import MainScreen from './screens/Main/MainScreen';
+
+const Stack = createNativeStackNavigator();
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-const screenWidth = Dimensions.get('window').width;
-
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const [homePage, setHomePage] = useState('register');
+  // const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  const loginAndRegisterDecider = () => {
-    if (homePage == 'login') {
-      return (
-        <View style={styles.infoTextContainer}>
-          <Text>Don't have an account</Text>
-          <TouchableOpacity onPress={() => setHomePage('register')}>
-            <Text style={styles.boldText}>Register</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else if (homePage == 'register') {
-      return (
-        <View style={styles.infoTextContainer}>
-          <Text>Already have an account?</Text>
-          <TouchableOpacity onPress={() => setHomePage('login')}>
-            <Text style={styles.boldText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   return (
-    <SafeAreaView style={styles.sectionContainer}>
-      <LoginAndRegisterScreen homePage={homePage} setHomePage={setHomePage} />
-      {loginAndRegisterDecider()}
-    </SafeAreaView>
+    <NavigationContainer>
+      {/* <LoginAndRegisterScreen /> */}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={LoginAndRegisterScreen}
+          options={{title: 'Welcome'}}
+        />
+        <Stack.Screen name="Main" component={MainScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 10,
-  },
-  boldText: {
-    fontSize: 14,
-    color: 'blue',
-  },
-  infoTextContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-    marginTop: 20,
-    // borderWidth: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//
+// });
 
 export default App;
