@@ -18,6 +18,7 @@ import {
   Text,
   TextInput,
   Touchable,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -47,22 +48,53 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const loginAndRegisterDecider = () => {
+    if (homePage == 'login') {
+      return (
+        <View style={styles.infoTextContainer}>
+          <Text>Don't have an account</Text>
+          <TouchableOpacity onPress={() => setHomePage('register')}>
+            <Text style={styles.boldText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (homePage == 'register') {
+      return (
+        <View style={styles.infoTextContainer}>
+          <Text>Already have an account?</Text>
+          <TouchableOpacity onPress={() => setHomePage('login')}>
+            <Text style={styles.boldText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.sectionContainer}>
       {/* <Touchable /> */}
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <CustomButton
           name="Login"
           width={100}
           onPressFunction={() => setHomePage('login')}
+          backgroundColor="gray"
+          textAlign="center"
         />
         <CustomButton
           name="Register"
           width={100}
           onPressFunction={() => setHomePage('register')}
         />
-      </View>
+      </View> */}
       {homePage == 'login' ? <Login /> : 'register' ? <Register /> : ''}
+      {loginAndRegisterDecider()}
+      {/* <View>
+        <Text>Don't have an account</Text>
+        <TouchableOpacity onPress={() => setHomePage('register')}>
+          <Text>Register</Text>
+        </TouchableOpacity>
+      </View> */}
     </SafeAreaView>
   );
 }
@@ -74,23 +106,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
-  textInput: {
-    width: (screenWidth / 100) * 65,
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 2,
-    borderWidth: 0.5,
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 10,
-  },
   buttonContainer: {
     flexDirection: 'row',
     gap: 10,
     marginBottom: 10,
+  },
+  boldText: {
+    fontSize: 14,
+    color: 'blue',
+  },
+  infoTextContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+    marginTop: 20,
+    // borderWidth: 1,
   },
 });
 

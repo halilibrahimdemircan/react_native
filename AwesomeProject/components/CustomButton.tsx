@@ -5,21 +5,37 @@ type ButtonProps = {
   onPressFunction?: () => void;
   width?: number;
   height?: number;
+  border?: boolean;
+  backgroundColor?: string;
+  textAlign?: string;
+  color?: string;
 };
 
 const CustomButton = (props: ButtonProps) => {
   const styles = {
     button: {
-      borderWidth: 0.5,
+      borderWidth: props.border ? 0.5 : 0,
       padding: 10,
       width: props.width,
       height: props.height,
+      backgroundColor: props.backgroundColor,
+      borderRadius: 5,
+      //   textAlign: 'center',
+      //   alignItems: 'center',
     },
-    buttonText: {},
+    buttonText: {
+      color: props.color == undefined ? 'black' : props.color,
+      //   ,
+      //   marginLeft: 80,
+      //   borderWidth: 1,
+      //   textAlign: 'center',
+    },
   };
   return (
     <Pressable style={styles.button} onPress={props.onPressFunction}>
-      <Text style={styles.buttonText}>{props.name}</Text>
+      <Text style={{...styles.buttonText, textAlign: 'center'}}>
+        {props.name}
+      </Text>
     </Pressable>
   );
 };

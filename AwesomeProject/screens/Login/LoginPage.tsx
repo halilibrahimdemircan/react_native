@@ -13,10 +13,15 @@ const screenWidth = Dimensions.get('window').width;
 const Login = () => {
   return (
     <SafeAreaView style={styles.viewContainer}>
-      <Text>Login</Text>
+      {/* <Text>Login</Text> */}
       <TextInput placeholder="Mail" style={styles.textInput} />
       <TextInput placeholder="Password" style={styles.textInput} />
-      <CustomButton name="Log in" />
+      <CustomButton
+        name="Login"
+        border={true}
+        backgroundColor="blue"
+        color="white"
+      />
     </SafeAreaView>
   );
 };
@@ -41,10 +46,10 @@ const styles = StyleSheet.create({
     // shadowOffset: {width: 0, height: 2},
     // shadowOpacity: 0.5,
     // shadowRadius: 2,
-    elevation: 2,
+    // elevation: 2,
     borderWidth: 0.5,
     borderColor: 'black',
-    borderRadius: 5,
+    borderRadius: 4,
     padding: 10,
   },
 });

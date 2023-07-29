@@ -13,10 +13,15 @@ const screenWidth = Dimensions.get('window').width;
 const Register = () => {
   return (
     <SafeAreaView style={styles.viewContainer}>
-      <Text>Register</Text>
+      {/* <Text>Register</Text> */}
       <TextInput placeholder="Mail" style={styles.textInput} />
       <TextInput placeholder="Password" style={styles.textInput} />
-      <CustomButton name="Register" />
+      <CustomButton
+        name="Register"
+        border={true}
+        color="white"
+        backgroundColor="blue"
+      />
     </SafeAreaView>
   );
 };
