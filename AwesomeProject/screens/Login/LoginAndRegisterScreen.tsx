@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {
   Alert,
   Dimensions,
@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import CustomButton from '../../components/CustomButton';
+import {useGlobalState} from '../../Context/GlobalStateContext';
 import useFetch from '../../ios/hooks/UseFetch';
 import {fetchData} from '../../utils/fetchData';
 // type LoginPageProps = {
@@ -18,19 +19,20 @@ import {fetchData} from '../../utils/fetchData';
 //   // setHomePage: Dispatch<SetStateAction<string>>;
 // };
 const screenWidth = Dimensions.get('window').width;
-const LoginAndRegisterScreen: React.FC<{navigation: any}> = ({navigation}) => {
-  // const LoginAndRegisterScreen = (props: LoginPageProps) => {
+const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
+  navigation,
+  route,
+}) => {
+  const {userInfo, setUserInfo} = useGlobalState();
+  console.log('hello userInfo :>> ', userInfo);
   const [homePage, setHomePage] = useState('register');
-
+  // password gizleme için kullanacağız
   const [isSecure, setIsSecure] = useState(false);
   const [userInput, setUserInput] = useState({
     email: '',
     password: '',
   });
-  const [userInfo, setUserInfo] = useState({
-    token: '',
-    error: '',
-  });
+
   const loginAndRegisterDecider = () => {
     if (homePage == 'login') {
       return (
@@ -52,53 +54,59 @@ const LoginAndRegisterScreen: React.FC<{navigation: any}> = ({navigation}) => {
       );
     }
   };
-  const handleLoginAndRegister = () => {
+  const handleLoginAndRegister = async () => {
     const options = {
       email: userInput.email,
       password: userInput.password,
     };
     if (homePage == 'register') {
-      fetchData('https://gapi.nftinit.io/api/register/', 'POST', options).then(
-        result => {
-          console.log('result :>> ', result);
-          if (result.success) {
-            setUserInfo(prevUserInfo => ({
-              ...prevUserInfo,
-              token: result.token,
-              error: '',
-            }));
-            // setHomePage('login');
-            navigation.navigate('Main');
-          } else {
-            setUserInfo(prevUserInfo => ({
-              ...prevUserInfo,
-              token: '',
-              error: result.error_message,
-            }));
-            Alert.alert('OOPS', result.error_message, [
-              {
-                text: 'OK',
-              },
-            ]);
-          }
-        },
+      const result = await fetchData(
+        'https://gapi.nftinit.io/api/register/',
+        'POST',
+        options,
       );
+
+      console.log('REGISTER result :>> ', result);
+      if (result.success) {
+        setUserInfo((prevUserInfo: any) => ({
+          ...prevUserInfo,
+          email: userInput.email,
+          token: result.token,
+          error: '',
+        }));
+        // setHomePage('login');
+        navigation.navigate('Main', {userInfo});
+      } else {
+        setUserInfo((prevUserInfo: any) => ({
+          ...prevUserInfo,
+          email: '',
+          token: '',
+          error: result.error_message,
+        }));
+        Alert.alert('OOPS', result.error_message, [
+          {
+            text: 'OK',
+          },
+        ]);
+      }
       // console.log('response :>> ', response);
     } else if (homePage == 'login') {
       fetchData('https://gapi.nftinit.io/api/login/', 'POST', options).then(
         result => {
-          console.log('result login:>> ', result);
+          console.log('LOGIN result :>> ', result);
           if (result.success) {
-            setUserInfo(prevUserInfo => ({
+            setUserInfo((prevUserInfo: any) => ({
               ...prevUserInfo,
+              email: userInput.email,
               token: result.token,
               error: '',
             }));
             // setHomePage('login');
-            navigation.navigate('Main');
+            navigation.navigate('Main', {userInfo});
           } else {
-            setUserInfo(prevUserInfo => ({
+            setUserInfo((prevUserInfo: any) => ({
               ...prevUserInfo,
+              email: '',
               token: '',
               error: result.error_message,
             }));
@@ -113,21 +121,15 @@ const LoginAndRegisterScreen: React.FC<{navigation: any}> = ({navigation}) => {
     }
   };
 
-  // const errorHandler = () => {
-  //   if (userInfo.error) {
-  //     return <Text style={styles.errorText}>{userInfo.error}</Text>;
-  //   }
-  // };
-  console.log('userInfo :>> ', userInfo);
+  console.log('LOGIN AND REGISTER userInfo :>> ', userInfo);
+  useEffect(() => {
+    // userInfo durumu değiştiğinde yapılacak işlemler
+    console.log('userInfo updated:>> ', userInfo);
+  }, [userInfo]);
 
   return (
     <SafeAreaView style={styles.sectionContainer}>
       <View style={styles.viewContainer}>
-        {/* <Text>Login</Text>  */}
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('Main', {name: 'Jane'})}>
-          <Text>BAsss</Text>
-        </TouchableOpacity> */}
         <TextInput
           autoCapitalize="none"
           keyboardType="email-address"
@@ -183,12 +185,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: (screenWidth / 100) * 65,
-    // marginTop: 20,
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.5,
-    // shadowRadius: 2,
-    // elevation: 2,
     borderWidth: 0.5,
     borderColor: 'black',
     borderRadius: 4,
