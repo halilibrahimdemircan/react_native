@@ -1,8 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
+import Logout from '../../components/Logout';
 
 const MainScreen = () => {
-  return <Text>Main Screen</Text>;
+  return (
+    <View>
+      <Logout />
+      <Text>Main Screen</Text>
+    </View>
+  );
 };
 
 export default MainScreen;

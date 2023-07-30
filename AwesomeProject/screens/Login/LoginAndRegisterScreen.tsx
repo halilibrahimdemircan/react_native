@@ -118,6 +118,7 @@ const LoginAndRegisterScreen: React.FC<{navigation: any}> = ({navigation}) => {
   //     return <Text style={styles.errorText}>{userInfo.error}</Text>;
   //   }
   // };
+  console.log('userInfo :>> ', userInfo);
 
   return (
     <SafeAreaView style={styles.sectionContainer}>
