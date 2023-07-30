@@ -5,31 +5,42 @@ import {fetchData} from '../utils/fetchData';
 
 const Logout: React.FC<{navigation: any}> = ({navigation}) => {
   const {userInfo, setUserInfo} = useGlobalState();
-  const logoutFunc = () => {
+  const logoutFunc = async () => {
+    console.log('Logout Func userInfo  :>> ', userInfo);
     const options = {
       email: userInfo.email,
       token: userInfo.token,
     };
-    fetchData('https://gapi.nftinit.io/api/logout/', 'POST', options).then(
-      result => {
-        console.log('logout result :>> ', result);
-        if (result.success && result.message == 'User logout') {
-          setUserInfo((prevUserInfo: any) => ({
-            ...prevUserInfo,
-            email: '',
-            token: '',
-            error: '',
-          }));
-          navigation.navigate('LoginAndRegister', {userInfo});
-        } else {
-          Alert.alert('OOPS', result.error_message || 'Something went wrong', [
-            {
-              text: 'OK',
-            },
-          ]);
-        }
-      },
-    );
+    try {
+      const result = await fetchData(
+        'https://gapi.nftinit.io/api/logout/',
+        'POST',
+        options,
+      );
+
+      console.log('logout result :>> ', result);
+      if (result.success && result.message == 'User logout') {
+        setUserInfo((prevUserInfo: any) => ({
+          ...prevUserInfo,
+          email: '',
+          token: '',
+          error: '',
+        }));
+        navigation.navigate('LoginAndRegister', {userInfo});
+      } else {
+        Alert.alert('OOPS', result.error_message || 'Something went wrong', [
+          {
+            text: 'OK',
+          },
+        ]);
+      }
+    } catch (error: any) {
+      Alert.alert('OOPS', error.message, [
+        {
+          text: 'OK',
+        },
+      ]);
+    }
   };
   const logOut = () => {
     Alert.alert('OOPS', 'Are you sure you want to exit', [

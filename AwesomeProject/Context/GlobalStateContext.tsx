@@ -12,7 +12,7 @@ type UserInfo = {
   error: string;
 };
 
-type OtherState = {
+type Dungeons = {
   // Diğer global durumlar burada tanımlanabilir
   // Örnek: isAuthenticated: boolean;
 };
@@ -20,28 +20,26 @@ type OtherState = {
 type GlobalStateType = {
   userInfo: UserInfo;
   setUserInfo: Dispatch<SetStateAction<UserInfo>>;
-  otherState: OtherState;
-  setOtherState: Dispatch<SetStateAction<OtherState>>;
+  dungeons: Dungeons;
+  setDungeons: Dispatch<SetStateAction<Dungeons>>;
 };
 
 const initialState: GlobalStateType = {
   userInfo: {email: '', token: '', error: ''},
   setUserInfo: () => {},
-  otherState: {},
-  setOtherState: () => {},
+  dungeons: {},
+  setDungeons: () => {},
 };
 
 export const GlobalStateContext = createContext<GlobalStateType>(initialState);
 
 export const GlobalStateProvider: React.FC<any> = ({children}) => {
   const [userInfo, setUserInfo] = useState<UserInfo>(initialState.userInfo);
-  const [otherState, setOtherState] = useState<OtherState>(
-    initialState.otherState,
-  );
+  const [dungeons, setDungeons] = useState<Dungeons>(initialState.dungeons);
 
   return (
     <GlobalStateContext.Provider
-      value={{userInfo, setUserInfo, otherState, setOtherState}}>
+      value={{userInfo, setUserInfo, dungeons, setDungeons}}>
       {children}
     </GlobalStateContext.Provider>
   );

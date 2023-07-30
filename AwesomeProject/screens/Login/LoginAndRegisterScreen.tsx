@@ -66,12 +66,12 @@ const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
         options,
       );
 
-      console.log('REGISTER result :>> ', result);
+      // console.log('REGISTER result :>> ', result);
       if (result.success) {
         setUserInfo((prevUserInfo: any) => ({
           ...prevUserInfo,
           email: userInput.email,
-          token: result.token,
+          token: result.data?.token,
           error: '',
         }));
         // setHomePage('login');
@@ -93,12 +93,12 @@ const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
     } else if (homePage == 'login') {
       fetchData('https://gapi.nftinit.io/api/login/', 'POST', options).then(
         result => {
-          console.log('LOGIN result :>> ', result);
+          // console.log('LOGIN result :>> ', result);
           if (result.success) {
             setUserInfo((prevUserInfo: any) => ({
               ...prevUserInfo,
               email: userInput.email,
-              token: result.token,
+              token: result.data?.token,
               error: '',
             }));
             // setHomePage('login');
@@ -120,12 +120,6 @@ const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
       );
     }
   };
-
-  console.log('LOGIN AND REGISTER userInfo :>> ', userInfo);
-  useEffect(() => {
-    // userInfo durumu değiştiğinde yapılacak işlemler
-    console.log('userInfo updated:>> ', userInfo);
-  }, [userInfo]);
 
   return (
     <SafeAreaView style={styles.sectionContainer}>
