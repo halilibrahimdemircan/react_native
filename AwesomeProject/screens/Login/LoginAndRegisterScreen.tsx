@@ -37,7 +37,7 @@ const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
     if (homePage == 'login') {
       return (
         <View style={styles.infoTextContainer}>
-          <Text>Don't have an account</Text>
+          <Text>Don't have an account?</Text>
           <TouchableOpacity onPress={() => setHomePage('register')}>
             <Text style={styles.boldText}>Register</Text>
           </TouchableOpacity>
