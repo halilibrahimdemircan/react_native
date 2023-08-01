@@ -24,7 +24,6 @@ const LoginAndRegisterScreen: React.FC<{navigation: any; route: any}> = ({
   route,
 }) => {
   const {userInfo, setUserInfo} = useGlobalState();
-  console.log('hello userInfo :>> ', userInfo);
   const [homePage, setHomePage] = useState('register');
   // password gizleme için kullanacağız
   const [isSecure, setIsSecure] = useState(false);
